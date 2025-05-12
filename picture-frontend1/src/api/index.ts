@@ -5,10 +5,12 @@
 import * as fileController from './fileController'
 import * as healthyController from './healthyController'
 import * as pictureController from './pictureController'
+import * as spaceController from './spaceController'
 import * as userController from './userController'
 export default {
   fileController,
   healthyController,
   pictureController,
+  spaceController,
   userController,
 }

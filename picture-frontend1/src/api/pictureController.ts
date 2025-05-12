@@ -2,8 +2,8 @@
 /* eslint-disable */
 import request from '../request/index'
 
-/** deletePicture POST /api/picture/delete */
-export async function deletePictureUsingPost(
+/** deletePictures POST /api/picture/delete */
+export async function deletePicturesUsingPost(
   body: API.DeleteRequest,
   options?: { [key: string]: any }
 ) {
@@ -83,6 +83,21 @@ export async function listPictureVoByPageUsingPost(
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponsePagePictureVO_>('/api/picture/list/page/vo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
+/** listPictureVOByPageWithCache POST /api/picture/list/page/vo/cache */
+export async function listPictureVoByPageWithCacheUsingPost(
+  body: API.PictureQueryRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponsePagePictureVO_>('/api/picture/list/page/vo/cache', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

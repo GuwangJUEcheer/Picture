@@ -98,29 +98,6 @@ public class PictureController {
 	}
 
 	/**
-	 * 删除图片
-	 */
-	@PostMapping("/delete")
-	public BaseResponse<Boolean> deletePicture(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request) {
-		if (deleteRequest == null || deleteRequest.getId() <= 0) {
-			throw new BusinessException(ErrorCode.PARAMS_ERROR);
-		}
-		User loginUser = userService.getLoginUser(request);
-		long id = deleteRequest.getId();
-		// 判断是否存在
-		Picture oldPicture = pictureService.getById(id);
-		ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR);
-		// 仅本人或管理员可删除
-		if (!oldPicture.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
-			throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
-		}
-		// 操作数据库
-		boolean result = pictureService.removeById(id);
-		ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
-		return ResultUtils.success(true);
-	}
-
-	/**
 	 * 更新图片（仅管理员可用）
 	 */
 	@PostMapping("/update")
