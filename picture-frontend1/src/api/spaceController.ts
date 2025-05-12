@@ -1,11 +1,11 @@
 // @ts-ignore
 /* eslint-disable */
-import index from '@/index'
+import request from '../request/index'
 
 /** addSpace POST /api/space/add */
 export async function addSpaceUsingPost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.addSpaceUsingPOSTParams,
+  params: API.SpaceAddRequest,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseLong_>('/api/space/add', {

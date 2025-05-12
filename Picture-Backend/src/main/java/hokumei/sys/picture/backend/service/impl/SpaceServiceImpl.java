@@ -90,7 +90,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, Space>
 				spaceId = transactionTemplate.execute(status -> {
 					//是否已有空间
 					boolean exists = this.lambdaQuery().eq(Space::getUserId, userId).exists();
-					ThrowUtils.throwIf(exists, ErrorCode.OPERATION_ERROR);
+					ThrowUtils.throwIf(exists, ErrorCode.OPERATION_ERROR,"不可以重复创建空间");
 					//创建
 					boolean result = this.save(space);
 					ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);

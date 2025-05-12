@@ -2,8 +2,9 @@
 import dayjs from 'dayjs'
 import { computed, onMounted, reactive, ref } from 'vue'
 import {
-  deletePictureUsingPost,
-  doPictureReviewUsingPost, listPictureByPageAdminUsingPost
+  deletePicturesUsingPost,
+  doPictureReviewUsingPost,
+  listPictureByPageAdminUsingPost
 } from '@/api/pictureController'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
@@ -147,7 +148,7 @@ const changeSelect = ()=>{
 const doDelete = (id: string) => {
   if (id) {
     //这里可以简写 id:id ->id
-    deletePictureUsingPost({ id: BigInt(id) })
+    deletePicturesUsingPost({ id: BigInt(id) })
       .then((res) => {
         if (res.data.code === 0 && res.data.data) {
           message.success('删除成功!')

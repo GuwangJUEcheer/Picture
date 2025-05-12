@@ -1,8 +1,4 @@
 declare namespace API {
-  type addSpaceUsingPOSTParams = {
-    spaceLevel?: number
-    spaceName?: string
-  }
 
   type BaseResponseBoolean_ = {
     code?: number
@@ -189,7 +185,7 @@ declare namespace API {
     category?: string
     createTime?: string
     editTime?: string
-    id?: number
+    id?: bigint
     introduction?: string
     isDelete?: number
     name?: string
@@ -320,6 +316,11 @@ declare namespace API {
 
   type SpaceEditRequest = {
     id?: number
+    spaceName?: string
+  }
+
+  type SpaceAddRequest = {
+    spaceLevel?: number
     spaceName?: string
   }
 
