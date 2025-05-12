@@ -1,0 +1,55 @@
+server:
+  port: 8100
+  servlet:
+    context-path: /api
+spring:
+  application:
+    name: picture-backend
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/pictureDb
+    username: root
+    password: Google!123
+  redis:
+    port: 6379
+    host: localhost
+    database: 0
+  session:
+    timeout: 86400
+    store-type: redis
+  profiles:
+    active: local
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
+mybatis-plus:
+  configuration:
+    # MyBatis 配置
+    map-underscore-to-camel-case: false
+    # 仅在开发环境打印日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+  global-config:
+    db-config:
+      logic-delete-field: isDelete  # 逻辑删除的数据库字段名
+      logic-delete-value: 1         # 逻辑已删除值（默认为 1）
+      logic-not-delete-value: 0      # 逻辑未删除值（默认为 0）
+
+knife4j:
+  enable: true
+  openapi:
+    title: 测试文档
+    description: "`调试`,**图片管理**
+    # aaa"
+    email: tatatani521@gmail.com
+    concat: 谷王珏
+    version: v4.0
+    license: Apache 2.0
+    license-url: https://stackoverflow.com/
+    terms-of-service-url: https://stackoverflow.com/
+    group:
+      default:
+        api-rule: package
+        api-rule-resources:
+          - hokumei.sys.picture.backend.controller
