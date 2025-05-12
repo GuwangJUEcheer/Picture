@@ -77,8 +77,8 @@ export async function getSpaceVoByIdUsingGet(
   })
 }
 
-/** addSpace GET /api/space/list/level */
-export async function addSpaceUsingGet(options?: { [key: string]: any }) {
+/** listSpaceLevel GET /api/space/list/level */
+export async function listSpaceLevelUsingGet(options?: { [key: string]: any }) {
   return request<API.BaseResponseListSpaceLevel_>('/api/space/list/level', {
     method: 'GET',
     ...(options || {}),
