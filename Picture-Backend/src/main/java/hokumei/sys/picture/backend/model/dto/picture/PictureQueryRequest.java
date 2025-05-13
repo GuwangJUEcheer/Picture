@@ -77,7 +77,7 @@ public class PictureQueryRequest extends PageRequest implements Serializable {
 	 */
 	private Long spaceId;
 
-	private Boolean onlySpaceNull;
+	private Boolean onlySpaceNull = false;
 
 	private Integer reviewStatus;
 

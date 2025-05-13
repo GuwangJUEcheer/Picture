@@ -54,7 +54,6 @@ const { resetFields,validate,validateInfos} = useForm(
     };
 
     const login = async () => {
-      console.log(modelRef);
       await userLoginUsingPost(modelRef).then((res) => {
         if(res.data.data){
           loginUserStore.setLoginUser(res.data.data);
@@ -79,12 +78,6 @@ const { resetFields,validate,validateInfos} = useForm(
         <a-input-password
           v-model:value="modelRef.userPassword"
           @blur="validate('userPassword', { trigger: 'blur' }).catch(() => {})"
-        />
-      </a-form-item>
-      <a-form-item label="确认密码" v-bind="validateInfos.checkPassword">
-        <a-input-password
-          v-model:value="modelRef.checkPassword"
-          @blur="validate('checkPassword', { trigger: 'blur' }).catch(() => {})"
         />
       </a-form-item>
       <div class="tips">

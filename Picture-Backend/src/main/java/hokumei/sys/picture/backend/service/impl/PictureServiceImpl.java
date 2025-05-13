@@ -156,10 +156,12 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
 		transactionTemplate.execute(status -> {
 			boolean result = this.saveOrUpdate(picture);
 			ThrowUtils.throwIf(!result,ErrorCode.OPERATION_ERROR,"数据操作失败");
-			boolean updateResult = spaceService.lambdaUpdate().eq(Space::getId, finalSpaceId).setSql(
-					"totalSize = totalSize + "  + picture.getPicSize()
-			).setSql("totalCount = totalCount + 1").update();
-			ThrowUtils.throwIf(!updateResult,ErrorCode.OPERATION_ERROR,"数据操作失败");
+			if(finalSpaceId!=null && finalSpaceId>0){
+				boolean updateResult = spaceService.lambdaUpdate().eq(Space::getId, finalSpaceId).setSql(
+						"totalSize = totalSize + "  + picture.getPicSize()
+				).setSql("totalCount = totalCount + 1").update();
+				ThrowUtils.throwIf(!updateResult,ErrorCode.OPERATION_ERROR,"数据操作失败");
+			}
 			return picture;
 		});
 

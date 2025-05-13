@@ -8,6 +8,7 @@ import {
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { SPACE_LEVEL_ENUM, SPACE_LEVEL_OPTIONS } from '@/const/space'
+import { formatSize } from '../../util'
 
 const space = ref<API.SpaceVO>()
 const router = useRouter()
@@ -29,7 +30,7 @@ onMounted(() => {
   fetchSpaceLevelList()
 })
 
-const spaceForm = reactive<API.SpaceAddRequest>({ spaceName: ''})
+const spaceForm = reactive<API.SpaceAddRequest | API.SpaceEditRequest>({ spaceName: ''})
 
 //编辑和新建空间是一个空间
 const getOldSpace = async () => {
@@ -67,6 +68,7 @@ const handleSubmit = async (values: any) => {
       message.error('空间创建失败' + res.data.message)
     }
   })
+  loading.value = false
 }
 
 const formData = reactive<API.SpaceAddRequest | API.SpaceUpdateRequest>({

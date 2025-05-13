@@ -13,7 +13,7 @@ const loading = ref<boolean>(false)
 const formData = reactive<API.PictureUploadBatchRequest>({ count: 1, searchText: '', namePrefix:''})
 
 const handleSubmit = async (values: any) => {
-  loading.value = false;
+  loading.value = true;
   await scrapePicturesUsingPost(formData).then((res) => {
     if (res.data.code === 0 && res.data.data) {
       message.success('批量抓取成功')
@@ -24,7 +24,7 @@ const handleSubmit = async (values: any) => {
       message.error('批量抓取失败' + res.data.message)
     }
   })
-  loading.value = true;
+  loading.value = false;
 }
 
 onMounted(() => {

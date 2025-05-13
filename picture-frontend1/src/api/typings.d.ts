@@ -404,7 +404,6 @@ declare namespace API {
   }
 
   type UserLoginRequest = {
-    checkPassword?: string
     userAccount?: string
     userPassword?: string
   }

@@ -60,7 +60,8 @@ const login = async () => {
   console.log(modelRef);
   await userRegisterUsingPost(modelRef).then((res) => {
     if(res.data.data && res.data.data>0){
-      message.success("注册成功");
+      message.success("注册成功,两秒后自动跳转到登录页面");
+
       router.push("/user/login");
     }
   });
