@@ -37,6 +37,12 @@
                     <LoginOutlined />
                     退出登录
                   </a-menu-item>
+                  <a-menu-item>
+                  <router-link to="/my_space">
+                    <UserOutlined />
+                    我的空间
+                  </router-link>
+                  </a-menu-item>
                 </a-menu>
               </template>
             </a-dropdown>
@@ -52,7 +58,7 @@
 
 <script setup lang="ts">
 import { computed, h, ref } from 'vue'
-import { HomeOutlined, LoginOutlined } from '@ant-design/icons-vue'
+import { HomeOutlined, LoginOutlined,UserOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { useLoginUserStore } from '@/stores/useLoginUserStore'
@@ -145,7 +151,7 @@ const doLogout = () => {
 const current = ref<string[]>(['/'])
 </script>
 
-<style scoped>
+<style>
 /* 整个导航栏样式 */
 #global-header {
   background: white;
@@ -158,26 +164,26 @@ const current = ref<string[]>(['/'])
 }
 
 /* 头部 Logo 区域 */
-.title-bar {
+#global-header .title-bar {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.logo {
+#global-header .logo {
   height: 50px;
   width: auto;
   border-radius: 10px; /* 让 Logo 变得更柔和 */
 }
 
-.title {
+#global-header .title {
   font-size: 22px;
   font-weight: bold;
   color: #333;
 }
 
 /* 菜单栏 */
-.menu {
+#global-header .menu {
   font-size: 18px;
   border-bottom: none !important; /* 移除底部边框 */
 }

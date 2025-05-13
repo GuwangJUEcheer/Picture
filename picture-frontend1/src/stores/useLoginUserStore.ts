@@ -12,16 +12,16 @@ export const useLoginUserStore = defineStore('user', () => {
 
   // 这里应该调用接口获取登录用户信息
   async function fetchLoginUser() {
-    const res =  await getLoginUserUsingGet();
-   if(res.data.data && res.data.code === 0){
-      loginUser.value = res.data.data;
-   }
+    const res = await getLoginUserUsingGet()
+    if (res.data.data && res.data.code === 0) {
+      loginUser.value = res.data.data
+    }
   }
 
   /**
    * 设置登录用户
    */
-  const setLoginUser = (newUser: API.LoginUserVO) =>{
+  const setLoginUser = (newUser: API.LoginUserVO) => {
     loginUser.value = newUser
   }
 

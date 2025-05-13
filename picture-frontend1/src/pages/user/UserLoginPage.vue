@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 import { reactive, toRaw } from 'vue';
-import { Form } from 'ant-design-vue';
+import { Form, message } from 'ant-design-vue'
 import { userLoginUsingPost } from '@/api/userController'
 import { useLoginUserStore } from '@/stores/useLoginUserStore'
 import router from '@/router'
@@ -13,8 +13,8 @@ const loginUserStore = useLoginUserStore();
 const modelRef = reactive<API.UserLoginRequest>({
   userAccount: '',
   userPassword: '',
-  checkPassword: '',
 });
+const loading = ref(false);
 
 const { resetFields,validate,validateInfos} = useForm(
       modelRef,
@@ -30,13 +30,7 @@ const { resetFields,validate,validateInfos} = useForm(
             required: true,
             message: '请输入密码',
           },
-        ],
-        checkPassword: [
-          {
-            required: true,
-            message: '请再次输入密码',
-          },
-        ],
+        ]
       }),
     );
     const onSubmit = () => {
@@ -54,12 +48,15 @@ const { resetFields,validate,validateInfos} = useForm(
     };
 
     const login = async () => {
+      loading.value = true;
       await userLoginUsingPost(modelRef).then((res) => {
         if(res.data.data){
           loginUserStore.setLoginUser(res.data.data);
         }
+        message.success("登陆成功");
         router.push("/")
       });
+      loading.value = false;
     }
 </script>
 
@@ -85,7 +82,7 @@ const { resetFields,validate,validateInfos} = useForm(
         <RouterLink to="/user/register">去注册</RouterLink>
       </div>
       <a-form-item>
-        <a-button type="primary" @click.prevent="onSubmit" html-type="submit">登录</a-button>
+        <a-button type="primary" @click.prevent="onSubmit" html-type="submit" :loading ="loading">登录</a-button>
         <a-button style="margin-left: 10px" @click="reset">取消</a-button>
       </a-form-item>
     </a-form>

@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 import { reactive, toRaw } from 'vue';
 import { Form, message } from 'ant-design-vue'
-import { userRegisterUsingPost } from '@/api/userController'
+import { userLoginUsingPost, userRegisterUsingPost } from '@/api/userController'
 import router from '@/router'
 
 const labelCol = ref({ span: 4 });
@@ -14,6 +14,7 @@ const modelRef = reactive<API.UserRegisterRequest>({
   userPassword: '',
   checkPassword: '',
 });
+const loading = ref(false);
 
 const { resetFields,validate,validateInfos} = useForm(
   modelRef,
@@ -43,26 +44,30 @@ const { resetFields,validate,validateInfos} = useForm(
   }),
 );
 const onSubmit = () => {
+  loading.value = true;
   validate()
     .then(res => {
-      console.log(res, toRaw(modelRef));
-      login();
+      goToLoginPage();
     })
     .catch(err => {
       console.log('error', err);
     });
+  loading.value = false;
 };
 const reset = () => {
   resetFields();
 };
 
-const login = async () => {
-  console.log(modelRef);
+const goToLoginPage = async () => {
   await userRegisterUsingPost(modelRef).then((res) => {
     if(res.data.data && res.data.data>0){
-      message.success("注册成功,两秒后自动跳转到登录页面");
-
-      router.push("/user/login");
+      message.success({
+        content: "注册成功，两秒后自动跳转到登录页面",
+        duration: 2, // 控制 message 显示时间
+      });
+      setTimeout(() => {
+        router.push("/user/login");
+      }, 2000);
     }
   });
 }
@@ -91,7 +96,7 @@ const login = async () => {
         />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 14, offset: 4 }">
-        <a-button type="primary" @click.prevent="onSubmit">注册</a-button>
+        <a-button type="primary" @click.prevent="onSubmit" :loading = "loading">注册</a-button>
         <a-button style="margin-left: 10px" @click="reset">取消</a-button>
       </a-form-item>
     </a-form>

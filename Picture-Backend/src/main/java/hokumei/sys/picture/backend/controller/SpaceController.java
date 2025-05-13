@@ -146,6 +146,10 @@ public class SpaceController {
 															 HttpServletRequest request) {
 		long current = spaceQueryRequest.getCurrent();
 		long size = spaceQueryRequest.getPageSize();
+		User loginUser = userService.getLoginUser(request);
+		if(!userService.isAdmin(loginUser)) {
+			spaceQueryRequest.setUserId(loginUser.getId());
+		}
 		// 查询数据库
 		Page<Space> spacePage = spaceService.page(new Page<>(current, size),
 				spaceService.getQueryWrapper(spaceQueryRequest));

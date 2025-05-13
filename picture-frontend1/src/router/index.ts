@@ -8,10 +8,11 @@ import noAuth from '../pages/noAuth.vue'
 import ACCESS_ENUM  from '../enum/accessNum'
 import AddPicturePage from '../pages/picture/AddPicturePage.vue'
 import PictureManagePage from '../pages/admin/PictureManagePage.vue'
-import SpaceManagePage from '../pages/admin/SpaceManagePage.vue'
+import SpaceManagePage from '../pages/space/SpaceManagePage.vue'
 import PictureDetailPage from '../pages/picture/PictureDetailPage.vue'
 import AddPictureBatchPage from '../pages/picture/AddPictureBatchPage.vue'
 import AddSpacePage from '../pages/space/AddSpacePage.vue'
+import MySpacePage from '../pages/space/MySpacePage.vue'
 
 const router = createRouter({
   history: createWebHistory(), // ✅ 确保 BASE_URL 配置正确
@@ -56,9 +57,6 @@ const router = createRouter({
       path: '/admin/spaceManage',
       name: '空间管理',
       component: SpaceManagePage,
-      meta:{
-        access:ACCESS_ENUM.ADMIN
-      }
     },
     {
       path: '/about',
@@ -77,9 +75,6 @@ const router = createRouter({
       path: '/add_space',
       name: '创建空间',
       component: AddSpacePage,
-      meta:{
-        access:ACCESS_ENUM.ADMIN
-      }
     },
     {
       path: '/pic_add/batch',
@@ -95,6 +90,11 @@ const router = createRouter({
       name: '图片详情',
       component: PictureDetailPage,
       props:true
+    },
+    {
+      path: '/my_space',
+      name: '我的空间',
+      component: MySpacePage,
     },
   ],
 });

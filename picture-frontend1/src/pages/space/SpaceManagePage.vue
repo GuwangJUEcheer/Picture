@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import dayjs from 'dayjs'
 import { computed, onMounted, reactive, ref } from 'vue'
-import {
-   listSpaceByPageAdminUsingPost
-} from '@/api/spaceController'
+import { listSpaceByPageAdminUsingPost, listSpaceVoByPageUsingPost } from '@/api/spaceController'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
-import { SPACE_LEVEL_MAP,SPACE_LEVEL_OPTIONS } from '@/const/space'
+import { SPACE_LEVEL_MAP, SPACE_LEVEL_OPTIONS } from '@/const/space'
 import { formatSize } from '@/util'
+
 const router = useRouter()
 const columns = [
   {
@@ -115,7 +114,11 @@ onMounted(() => {
     <!--表单-->
     <a-form layout="inline" :model="spaceSearchParam" @finish="doSearch">
       <a-form-item label="空间名称" name="spaceName">
-        <a-input v-model:value="spaceSearchParam.spaceName" placeholder="请输入空间名称" allow-clear />
+        <a-input
+          v-model:value="spaceSearchParam.spaceName"
+          placeholder="请输入空间名称"
+          allow-clear
+        />
       </a-form-item>
       <a-form-item label="空间级别" name="spaceLevel">
         <a-select

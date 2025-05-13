@@ -8,6 +8,6 @@
      import BasicLayOut from './layouts/BasicLayOut.vue'
 </script>
 
-<style scoped>
+<style>
 
 </style>
