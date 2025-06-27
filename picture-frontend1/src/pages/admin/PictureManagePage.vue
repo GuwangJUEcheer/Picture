@@ -118,9 +118,8 @@ const pagination = computed(() => {
 })
 
 const fetchData = async () => {
-  await listPictureByPageAdminUsingPost({ ...pictureSearchParam })
+  await listPictureByPageAdminUsingPost({ ...pictureSearchParam,nullSpaceId:true })
     .then((res) => {
-      console.log(res)
       if (res.data.code === 0 && res.data.data) {
         dataList.value = res.data.data.records ?? []
         total.value = res.data.data.total ?? 0
@@ -167,7 +166,7 @@ const doSearch = () => {
 }
 
 const doEdit = (id: bigint) => {
-  router.push('/pic/add?id=' + id)
+  router.push('/add_picture?id=' + id)
 }
 
 //页面加载时候获得请求数据
@@ -181,7 +180,7 @@ onMounted(() => {
     <a-flex justify="space-between">
       <h2>图片管理</h2>
       <a-space>
-        <a-button type="primary" href="/pic/add" target="_blank">+ 创建图片</a-button>
+        <a-button type="primary" href="/add_picture" target="_blank">+ 创建图片</a-button>
         <a-button type="primary" href="/pic_add/batch" target="_blank" ghost>+ 批量创建图片</a-button>
       </a-space>
     </a-flex>

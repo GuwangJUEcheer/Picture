@@ -13,6 +13,7 @@ import PictureDetailPage from '../pages/picture/PictureDetailPage.vue'
 import AddPictureBatchPage from '../pages/picture/AddPictureBatchPage.vue'
 import AddSpacePage from '../pages/space/AddSpacePage.vue'
 import MySpacePage from '../pages/space/MySpacePage.vue'
+import SpaceDetailPage from '../pages/space/SpaceDetailPage.vue'
 
 const router = createRouter({
   history: createWebHistory(), // ✅ 确保 BASE_URL 配置正确
@@ -64,7 +65,7 @@ const router = createRouter({
       component:AboutView,
     },
     {
-      path: '/pic/add',
+      path: '/add_picture',
       name: '添加图片',
       component: AddPicturePage,
       meta:{
@@ -96,6 +97,17 @@ const router = createRouter({
       name: '我的空间',
       component: MySpacePage,
     },
+    {
+      path: '/space/:id',
+      name: '空间详情',
+      component: SpaceDetailPage,
+      props: true,
+    },
+    {
+      path: '/search_picture',
+      name: '图片搜索',
+      component: SearchPicturePage,
+    }
   ],
 });
 

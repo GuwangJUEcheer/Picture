@@ -49,4 +49,9 @@ public class UploadPictureResult {
 	 */
 	private String thumbnailUrl;
 
+	/**
+	 * 主色调
+	 */
+	private String picColor;
+
 }

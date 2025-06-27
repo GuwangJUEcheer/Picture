@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import PictureUpload from '@/components/icons/PictureUpload.vue'
-import { onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import {
   editPictureUsingPost,
   getPictureVoByIdUsingGet,
@@ -11,6 +11,9 @@ import { useRoute, useRouter } from 'vue-router'
 import {type Options } from '@/const/PictureConstant'
 import UrlPictureUpload from '@/components/icons/UrlPictureUpload.vue'
 
+const spaceId = computed(()=>{
+  return route.query.spaceId
+})
 const picture = ref<API.PictureVO>()
 const router = useRouter()
 const route = useRoute()
@@ -24,6 +27,9 @@ const getOldPicture = async () => {
       message.success('进入编辑模式')
       const data = res.data.data
       picture.value = data
+      if(!spaceId){
+        picture.value.spaceId = spaceId
+      }
       pictureForm.category = data.category
       pictureForm.tags = data.tags
       pictureForm.name = data.name
@@ -37,7 +43,6 @@ const getOldPicture = async () => {
  */
 const onSuccess = (newPicture: API.PictureVO) => {
   picture.value = newPicture
-  console.log(picture)
   pictureForm.name = newPicture.name
 }
 
@@ -49,18 +54,20 @@ const uploadType = ref<'file' | 'url'>('file');
 const pictureForm = reactive<API.PictureEditRequest>({ name: '', introduction: '', tags: [] })
 
 const handleSubmit = async (values: any) => {
-  console.log({ ...values })
   const id = picture.value?.id
   if (!id) return
   await editPictureUsingPost({
     id: id,
     ...values,
+    spaceId: spaceId.value,
   }).then((res) => {
     if (res.data.code === 0 && res.data.data) {
       message.success('图片编辑成功')
-      router.push({
-        path: `/picture/${id}`,
-      })
+      if(spaceId.value){
+        router.push({
+          path: `/space/${spaceId.value}`,
+        })
+      }
     } else {
       message.error('图片编辑失败' + res.data.message)
     }
@@ -96,7 +103,7 @@ const getTagCategoryOptions = async () => {
       }
     })
   } else {
-    message.error('创建失败: ' + res.data.message)
+    message.error('获取标签分类失败: ' + res.data.message)
   }
 }
 </script>
@@ -107,14 +114,17 @@ const getTagCategoryOptions = async () => {
     <h2 style="text-align: center; margin-bottom: 16px">
       {{ route.query?.id ? '修改图片' : '创建图片' }}
     </h2>
+    <a-typography-paragraph v-if="spaceId" type="secondary">
+      保存至空间 <a :href="`/space/${spaceId}`" target="_blank">{{ spaceId }}</a>
+    </a-typography-paragraph>
     <a-tabs v-model:activeKey="uploadType">
       <a-tab-pane key="file" tab="图片上传">
         <!--图片上传组件1-->
-        <PictureUpload :picture="picture" :on-success="onSuccess" />
+        <PictureUpload :picture="picture" :on-success="onSuccess" :spaceId="spaceId"/>
       </a-tab-pane>
       <a-tab-pane key="url" tab="url上传" force-render>
         <!--图片上传组件2-->
-        <UrlPictureUpload :picture="picture" :on-success="onSuccess" />
+        <UrlPictureUpload :picture="picture" :on-success="onSuccess" :spaceId="spaceId"/>
       </a-tab-pane>
     </a-tabs>
     <!--图片上传表单-->

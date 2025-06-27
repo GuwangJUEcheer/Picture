@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import hokumei.sys.picture.backend.annotation.AuthCheck;
+import hokumei.sys.picture.backend.api.imageSearch.ImageSearchApiFacade;
+import hokumei.sys.picture.backend.api.model.ImageSearchResult;
 import hokumei.sys.picture.backend.common.BaseResponse;
 import hokumei.sys.picture.backend.common.DeleteRequest;
 import hokumei.sys.picture.backend.common.ResultUtils;
@@ -87,7 +89,6 @@ public class PictureController {
 	 * 上传图片（可覆盖上传）
 	 */
 	@PostMapping("/upload/url")
-	@AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
 	public BaseResponse<PictureVO> uploadPictureByUrl(
 			@RequestBody PictureUploadRequest pictureUploadRequest,
 			HttpServletRequest request) {
@@ -102,7 +103,7 @@ public class PictureController {
 	 */
 	@PostMapping("/update")
 	@AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-	public BaseResponse<Boolean> updatePicture(@RequestBody PictureUpdateRequest pictureUpdateRequest,HttpServletRequest request) {
+	public BaseResponse<Boolean> updatePicture(@RequestBody PictureUpdateRequest pictureUpdateRequest, HttpServletRequest request) {
 		if (pictureUpdateRequest == null || pictureUpdateRequest.getId() <= 0) {
 			throw new BusinessException(ErrorCode.PARAMS_ERROR);
 		}
@@ -116,7 +117,7 @@ public class PictureController {
 		// 判断是否存在
 		long id = pictureUpdateRequest.getId();
 		Picture oldPicture = pictureService.getById(id);
-		pictureService.fillReviewStatus(oldPicture,userService.getLoginUser(request));
+		pictureService.fillReviewStatus(oldPicture, userService.getLoginUser(request));
 		ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR);
 		// 操作数据库
 		boolean result = pictureService.updateById(picture);
@@ -162,7 +163,7 @@ public class PictureController {
 	 */
 	@PostMapping("/list/page")
 	@AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-	public BaseResponse<Page<PictureVO>> listPictureByPageAdmin(@RequestBody PictureQueryRequest pictureQueryRequest,HttpServletRequest request) {
+	public BaseResponse<Page<PictureVO>> listPictureByPageAdmin(@RequestBody PictureQueryRequest pictureQueryRequest, HttpServletRequest request) {
 		long current = pictureQueryRequest.getCurrent();
 		long size = pictureQueryRequest.getPageSize();
 		User loginUser = userService.getLoginUser(request);
@@ -170,7 +171,7 @@ public class PictureController {
 		// 查询数据库
 		Page<Picture> picturePage = pictureService.page(new Page<>(current, size),
 				pictureService.getQueryWrapper(pictureQueryRequest));
-		List<PictureVO> pictureVOList = picturePage.getRecords().stream().map(dvo->{
+		List<PictureVO> pictureVOList = picturePage.getRecords().stream().map(dvo -> {
 			PictureVO pictureVO = PictureVO.objToVo(dvo);
 			pictureVO.setUser(loginUserVO);
 			return pictureVO;
@@ -221,7 +222,7 @@ public class PictureController {
 	 */
 	@PostMapping("/list/page/vo/cache")
 	public BaseResponse<Page<PictureVO>> listPictureVOByPageWithCache(@RequestBody PictureQueryRequest pictureQueryRequest,
-															 HttpServletRequest request) {
+																	  HttpServletRequest request) {
 		//todo 使用redis进行缓存
 		long current = pictureQueryRequest.getCurrent();
 		long size = pictureQueryRequest.getPageSize();
@@ -237,7 +238,7 @@ public class PictureController {
 		//操作redis从缓存中进行查询
 		ValueOperations<String, String> optionsOrValues = stringRedisTemplate.opsForValue();
 		String cacheValue = optionsOrValues.get(redisKey);
-		if(cacheValue != null) {
+		if (cacheValue != null) {
 			LOCAL_CACHE.put(redisKey, cacheValue);
 			//命中缓存返回结果
 			Page<PictureVO> pictureVOPage = JSONUtil.toBean(cacheValue, Page.class);
@@ -250,7 +251,7 @@ public class PictureController {
 		//存入缓存
 		Page<PictureVO> pictureVOPage = pictureService.getPictureVOPage(picturePage, request);
 		//过期时间5分钟
-		optionsOrValues.set(redisKey, JSONUtil.toJsonStr(pictureVOPage),300, TimeUnit.SECONDS);
+		optionsOrValues.set(redisKey, JSONUtil.toJsonStr(pictureVOPage), 300, TimeUnit.SECONDS);
 		LOCAL_CACHE.put(redisKey, cacheValue);
 		// 获取封装类
 		return ResultUtils.success(pictureVOPage);
@@ -265,12 +266,13 @@ public class PictureController {
 			throw new BusinessException(ErrorCode.PARAMS_ERROR);
 		}
 		User loginUser = userService.getLoginUser(request);
-		pictureService.editPicture(pictureEditRequest,loginUser);
+		pictureService.editPicture(pictureEditRequest, loginUser);
 		return ResultUtils.success(true);
 	}
 
 	/**
 	 * 获取标签 分类 绝大部分没必要新建一个表
+	 *
 	 * @return 返回分类VO对象
 	 */
 	@GetMapping("/tag_category")
@@ -287,16 +289,17 @@ public class PictureController {
 	 * 删除图片
 	 */
 	@PostMapping("/delete")
-	public BaseResponse<Boolean> deletePictures(@RequestBody DeleteRequest deleteRequest,HttpServletRequest request) {
+	public BaseResponse<Boolean> deletePictures(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request) {
 		ThrowUtils.throwIf(deleteRequest == null || deleteRequest.getId() <= 0, ErrorCode.PARAMS_ERROR);
 		User loginUser = userService.getLoginUser(request);
 		Long id = deleteRequest.getId();
-        pictureService.deletePicture(id,loginUser);
+		pictureService.deletePicture(id, loginUser);
 		return ResultUtils.success(true);
 	}
 
 	/**
 	 * 图片上传审核
+	 *
 	 * @param pictureReviewRequest
 	 * @param request
 	 * @return
@@ -316,10 +319,34 @@ public class PictureController {
 	 */
 	@PostMapping("/scrape")
 	@AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-	public BaseResponse<Integer> scrapePictures(@RequestBody PictureUploadByBatchRequest pictureUploadByBatchRequest,HttpServletRequest request) {
+	public BaseResponse<Integer> scrapePictures(@RequestBody PictureUploadByBatchRequest pictureUploadByBatchRequest, HttpServletRequest request) {
 		ThrowUtils.throwIf(pictureUploadByBatchRequest == null, ErrorCode.PARAMS_ERROR);
 		User loginUser = userService.getLoginUser(request);
 		Integer successCount = pictureService.uploadPictureByBatch(pictureUploadByBatchRequest, loginUser);
 		return ResultUtils.success(successCount);
+	}
+
+	/**
+	 * 以图搜图
+	 */
+	@PostMapping("/search/picture")
+	public BaseResponse<List<ImageSearchResult>> searchPictureByPicture(@RequestBody SearchPictureByPictureRequest searchPictureByPictureRequest) {
+		ThrowUtils.throwIf(searchPictureByPictureRequest == null, ErrorCode.PARAMS_ERROR);
+		Long pictureId = searchPictureByPictureRequest.getPictureId();
+		ThrowUtils.throwIf(pictureId == null || pictureId <= 0, ErrorCode.PARAMS_ERROR);
+		Picture oldPicture = pictureService.getById(pictureId);
+		ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR);
+		List<ImageSearchResult> resultList = ImageSearchApiFacade.searchImage(oldPicture.getUrl());
+		return ResultUtils.success(resultList);
+	}
+
+	@PostMapping("/search/color")
+	public BaseResponse<List<PictureVO>> searchPictureByColor(@RequestBody SearchPictureByColorRequest searchPictureByColorRequest, HttpServletRequest request) {
+		ThrowUtils.throwIf(searchPictureByColorRequest == null, ErrorCode.PARAMS_ERROR);
+		String picColor = searchPictureByColorRequest.getPicColor();
+		Long spaceId = searchPictureByColorRequest.getSpaceId();
+		User loginUser = userService.getLoginUser(request);
+		List<PictureVO> result = pictureService.searchPictureByColor(spaceId, picColor, loginUser);
+		return ResultUtils.success(result);
 	}
 }

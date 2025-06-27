@@ -98,6 +98,24 @@ public abstract class PictureUploadTemplate {
 		return uploadPictureResult;
 	}
 
+	private UploadPictureResult buildUploadResult(String originalFilename,File file ,String uploadPath,ImageInfo imageInfo ) {
+		// 计算宽高
+		int picWidth = imageInfo.getWidth();
+		int picHeight = imageInfo.getHeight();
+        double picSale = NumberUtil.round((picWidth * 1.0) / picHeight, 2).doubleValue();
+		//分装返回结果
+		UploadPictureResult uploadPictureResult = new UploadPictureResult();
+		uploadPictureResult.setUrl(cosClientConfig.getHost() + "/" + uploadPath);
+		uploadPictureResult.setName(FileUtil.mainName(originalFilename));
+		uploadPictureResult.setPicSize(FileUtil.size(file));
+		uploadPictureResult.setPicWidth(picWidth);
+		uploadPictureResult.setPicHeight(picHeight);
+		uploadPictureResult.setPicScale(picSale);
+		uploadPictureResult.setPicFormat(imageInfo.getFormat());
+		uploadPictureResult.setPicColor(imageInfo.getAve());
+		return uploadPictureResult;
+	}
+
 	protected abstract void processFile(Object inputSource, File file) throws Exception;
 
 	protected abstract String getOriginFilename(Object inputSource);

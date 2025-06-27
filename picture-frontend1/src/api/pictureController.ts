@@ -2,6 +2,10 @@
 /* eslint-disable */
 import request from '../request/index'
 
+export function searchPictureByPictureUsingPost() {
+}
+
+
 /** deletePictures POST /api/picture/delete */
 export async function deletePicturesUsingPost(
   body: API.DeleteRequest,

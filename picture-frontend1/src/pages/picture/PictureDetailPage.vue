@@ -46,6 +46,19 @@
             <a-descriptions-item label="大小">
               {{ formatSize(picture.picSize) }}
             </a-descriptions-item>
+            <a-descriptions-item label="主色调">
+              <a-space>
+                {{ picture.picColor ?? '-' }}
+                <div
+                  v-if="picture.picColor"
+                  :style="{
+                    backgroundColor: toHexColor(picture.picColor),
+                    width: '16px',
+                    height: '16px',
+                  }"
+                />
+              </a-space>
+            </a-descriptions-item>
           </a-descriptions>
           <!-- 图片操作 -->
           <!--内容过多的话就折叠-->
@@ -76,7 +89,7 @@ import { message } from 'ant-design-vue'
 import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { useLoginUserStore } from '@/stores/useLoginUserStore.ts'
 import { useRouter } from 'vue-router'
-import { downloadImage, formatSize } from '@/util'
+import { downloadImage, formatSize, toHexColor } from '@/util'
 
 interface Props {
   id: bigint
@@ -103,10 +116,11 @@ const canEdit = computed(() => {
 const fetchPictureDetail = async () => {
   try {
     const res = await getPictureVoByIdUsingGet({
-      id: props.id??0n,
+      id: props.id ?? 0n,
     })
     if (res.data.code === 0 && res.data.data) {
       picture.value = res.data.data
+      console.log(picture.value)
     } else {
       message.error('获取图片详情失败，' + res.data.message)
     }
@@ -123,16 +137,23 @@ const router = useRouter()
 
 // 编辑
 const doEdit = () => {
-  router.push('/add_picture?id=' + picture.value.id)
+  alert(picture.value.id)
+  router.push({
+    path: '/add_picture',
+    query: {
+      id: picture.value.id,
+      spaceId: picture.value.spaceId,
+    },
+  })
 }
 
 // 删除数据
 const doDelete = async () => {
-  const id:string = picture.value.id??""
+  const id: string = picture.value.id ?? ''
   if (!id) {
     return
   }
-  const res = await deletePicturesUsingPost({ id:BigInt(id) })
+  const res = await deletePicturesUsingPost({ id: BigInt(id) })
   if (res.data.code === 0) {
     message.success('删除成功')
   } else {
@@ -151,4 +172,3 @@ const doDownload = () => {
   margin-bottom: 16px;
 }
 </style>
-

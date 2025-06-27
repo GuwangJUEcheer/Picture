@@ -48,6 +48,11 @@ public class PictureVO {
 	private Long picSize;
 
 	/**
+	 * 图片SpaceId
+	 */
+	private Long spaceId;
+
+	/**
 	 * 图片宽度
 	 */
 	private Integer picWidth;

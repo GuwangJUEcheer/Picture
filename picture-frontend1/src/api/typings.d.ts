@@ -234,6 +234,8 @@ declare namespace API {
     searchText?: string
     sortField?: string
     sortOrder?: string
+    startEditTime?: string
+    endEditTime?: string
     spaceId?: number
     tags?: string[]
     userId?: number
@@ -292,6 +294,7 @@ declare namespace API {
     url?: string
     user?: UserVO
     userId?: number
+    spaceId?:number
   }
 
   type searchUsingGETParams = {

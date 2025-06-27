@@ -23,6 +23,7 @@ import { uploadPictureUsingPost } from '@/api/pictureController'
 interface Props {
   picture:API.PictureVO,
   onSuccess?: (newPicture: API.PictureVO) => void
+  spaceId?: number
 }
 const props = defineProps<Props>();
 
@@ -58,7 +59,7 @@ const handleUpload = async ({file}:any) => {
      id = BigInt(props.picture?.id)
   }
   try{
-    const res = await uploadPictureUsingPost({id},{},file)
+    const res = await uploadPictureUsingPost({id,spaceId:props.spaceId},{},file)
     if(res.data.code === 0 && res.data.data){
       message.success("上传成功");
        id = BigInt(res.data.data.id);

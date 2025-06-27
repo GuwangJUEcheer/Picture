@@ -75,7 +75,7 @@ const menus = [
     title: '主页',
   },
   {
-    key: '/pic/add',
+    key: '/add_picture',
     label: '创建图片',
     title: '创建图片',
   },
