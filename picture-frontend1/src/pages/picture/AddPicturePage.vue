@@ -10,6 +10,8 @@ import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import {type Options } from '@/const/PictureConstant'
 import UrlPictureUpload from '@/components/icons/UrlPictureUpload.vue'
+import { EditOutlined, FullscreenOutlined } from '@ant-design/icons-vue'
+import ImageOutPainting from '@/components/icons/ImageOutPainting.vue'
 
 const spaceId = computed(()=>{
   return route.query.spaceId
@@ -45,6 +47,22 @@ const onSuccess = (newPicture: API.PictureVO) => {
   picture.value = newPicture
   pictureForm.name = newPicture.name
 }
+
+// AI 扩图弹窗引用
+const imageOutPaintingRef = ref()
+
+// AI 扩图
+const doImagePainting = () => {
+  if (imageOutPaintingRef.value) {
+    imageOutPaintingRef.value.openModal()
+  }
+}
+
+// 编辑成功事件
+const onImageOutPaintingSuccess = (newPicture: API.PictureVO) => {
+  picture.value = newPicture
+}
+
 
 /**
  * 上传类别
@@ -167,6 +185,19 @@ const getTagCategoryOptions = async () => {
         <a-button style="width: 100%" html-type="submit" type="primary">创建</a-button>
       </a-form-item>
     </a-form>
+
+    <a-space size="middle">
+      <a-button :icon="h(EditOutlined)" @click="doEditPicture">编辑图片</a-button>
+      <a-button type="primary" ghost :icon="h(FullscreenOutlined)" @click="doImagePainting">
+        AI 扩图
+      </a-button>
+    </a-space>
+    <ImageOutPainting
+      ref="imageOutPaintingRef"
+      :picture="picture"
+      :spaceId="spaceId"
+      :onSuccess="onImageOutPaintingSuccess"
+    />
   </div>
 </template>
 

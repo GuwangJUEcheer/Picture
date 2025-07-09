@@ -54,6 +54,9 @@ const handleUpload = async () => {
   loading.value = false;
 }
 
+const uploadLoading = ref<boolean>(false)
+
+
 </script>
 <style scoped>
 .url-picture-upload :deep(.ant-upload) {

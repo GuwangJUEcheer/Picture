@@ -10,6 +10,8 @@ import hokumei.sys.picture.backend.exception.BusinessException;
 import hokumei.sys.picture.backend.exception.ErrorCode;
 import hokumei.sys.picture.backend.exception.ThrowUtils;
 import hokumei.sys.picture.backend.model.dto.space.*;
+import hokumei.sys.picture.backend.model.dto.spaceAnalyze.SpaceUserAnalyzeRequest;
+import hokumei.sys.picture.backend.model.dto.spaceAnalyze.SpaceUserAnalyzeResponse;
 import hokumei.sys.picture.backend.model.entity.Space;
 import hokumei.sys.picture.backend.model.entity.User;
 import hokumei.sys.picture.backend.model.enums.SpaceLevelEnum;

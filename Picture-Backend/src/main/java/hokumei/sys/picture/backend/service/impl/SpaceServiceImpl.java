@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import hokumei.sys.picture.backend.model.dto.space.SpaceAddRequest;
-import hokumei.sys.picture.backend.model.entity.Picture;
 import hokumei.sys.picture.backend.model.entity.Space;
 import hokumei.sys.picture.backend.exception.BusinessException;
 import hokumei.sys.picture.backend.exception.ErrorCode;
@@ -20,12 +19,8 @@ import hokumei.sys.picture.backend.model.vo.UserVO;
 import hokumei.sys.picture.backend.service.SpaceService;
 import hokumei.sys.picture.backend.mapper.SpaceMapper;
 import hokumei.sys.picture.backend.service.UserService;
-import org.apache.ibatis.transaction.Transaction;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationAdapter;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.annotation.Resource;
@@ -215,6 +210,21 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, Space>
 			}
 		}
 	}
+
+	/**
+	 * 空间权限校验
+	 *
+	 * @param loginUser
+	 * @param space
+	 */
+	@Override
+	public void checkSpaceAuth(User loginUser, Space space) {
+		// 仅本人或管理员可访问
+		if (!space.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
+			throw new BusinessException(ErrorCode.NO_AUTH_ERROR);
+		}
+	}
+
 }
 
 
