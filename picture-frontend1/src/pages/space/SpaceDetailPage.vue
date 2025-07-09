@@ -107,6 +107,15 @@ onMounted(() => {
     :show-total="() => `图片总数 ${total} / ${space.maxCount}`"
     @change="onPageChange"
   />
+  <a-button
+    type="primary"
+    ghost
+    :icon="h(BarChartOutlined)"
+    :href="`/space_analyze?spaceId=${id}`"
+    target="_blank"
+  >
+    空间分析
+  </a-button>
 </template>
 
 <style scoped></style>

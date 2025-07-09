@@ -14,6 +14,8 @@ import AddPictureBatchPage from '../pages/picture/AddPictureBatchPage.vue'
 import AddSpacePage from '../pages/space/AddSpacePage.vue'
 import MySpacePage from '../pages/space/MySpacePage.vue'
 import SpaceDetailPage from '../pages/space/SpaceDetailPage.vue'
+import SearchPicturePage from '../pages/picture/SearchPicturePage.vue'
+import SpaceAnalyzePage from '../pages/space/SpaceAnalyzePage.vue'
 
 const router = createRouter({
   history: createWebHistory(), // ✅ 确保 BASE_URL 配置正确
@@ -107,6 +109,11 @@ const router = createRouter({
       path: '/search_picture',
       name: '图片搜索',
       component: SearchPicturePage,
+    },
+    {
+      path: '/space_analyze',
+      name: '空间分析',
+      component: SpaceAnalyzePage,
     }
   ],
 });

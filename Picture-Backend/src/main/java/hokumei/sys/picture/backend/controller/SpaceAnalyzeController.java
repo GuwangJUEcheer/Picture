@@ -5,6 +5,7 @@ import hokumei.sys.picture.backend.common.ResultUtils;
 import hokumei.sys.picture.backend.exception.ErrorCode;
 import hokumei.sys.picture.backend.exception.ThrowUtils;
 import hokumei.sys.picture.backend.model.dto.spaceAnalyze.*;
+import hokumei.sys.picture.backend.model.entity.Space;
 import hokumei.sys.picture.backend.model.entity.User;
 import hokumei.sys.picture.backend.service.SpaceAnalyzeService;
 import hokumei.sys.picture.backend.service.UserService;
@@ -70,6 +71,14 @@ public class SpaceAnalyzeController {
 		ThrowUtils.throwIf(spaceUserAnalyzeRequest == null, ErrorCode.PARAMS_ERROR);
 		User loginUser = userService.getLoginUser(request);
 		List<SpaceUserAnalyzeResponse> resultList = spaceAnalyzeService.getSpaceUserAnalyze(spaceUserAnalyzeRequest, loginUser);
+		return ResultUtils.success(resultList);
+	}
+
+	@PostMapping("/rank")
+	public BaseResponse<List<Space>> getSpaceRankAnalyze(@RequestBody SpaceRankAnalyzeRequest spaceRankAnalyzeRequest, HttpServletRequest request) {
+		ThrowUtils.throwIf(spaceRankAnalyzeRequest == null, ErrorCode.PARAMS_ERROR);
+		User loginUser = userService.getLoginUser(request);
+		List<Space> resultList = spaceAnalyzeService.getSpaceRankAnalyze(spaceRankAnalyzeRequest, loginUser);
 		return ResultUtils.success(resultList);
 	}
 }

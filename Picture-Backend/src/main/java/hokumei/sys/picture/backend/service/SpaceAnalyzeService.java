@@ -1,6 +1,7 @@
 package hokumei.sys.picture.backend.service;
 
 import hokumei.sys.picture.backend.model.dto.spaceAnalyze.*;
+import hokumei.sys.picture.backend.model.entity.Space;
 import hokumei.sys.picture.backend.model.entity.User;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface SpaceAnalyzeService {
 	List<SpaceSizeAnalyzeResponse> getSpaceSizeAnalyze(SpaceSizeAnalyzeRequest spaceSizeAnalyzeRequest, User loginUser);
 
 	List<SpaceUserAnalyzeResponse> getSpaceUserAnalyze(SpaceUserAnalyzeRequest spaceUserAnalyzeRequest, User loginUser);
+
+	List<Space> getSpaceRankAnalyze(SpaceRankAnalyzeRequest spaceRankAnalyzeRequest, User loginUser);
 }
