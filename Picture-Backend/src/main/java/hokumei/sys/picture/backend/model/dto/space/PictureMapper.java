@@ -1,4 +1,4 @@
-package generator.mapper;
+package hokumei.sys.picture.backend.model.dto.space;
 
 import generator.domain.Picture;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

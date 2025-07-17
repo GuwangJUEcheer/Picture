@@ -71,6 +71,11 @@ public class Space {
     private Date updateTime;
 
     /**
+     * 0 :private 1:public
+     */
+    private Integer spaceType;
+
+    /**
      * 是否删除
      */
     private Integer isDelete;

@@ -3,7 +3,7 @@ package generator.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import generator.domain.Picture;
 import generator.service.PictureService;
-import generator.mapper.PictureMapper;
+import hokumei.sys.picture.backend.model.dto.space.PictureMapper;
 import org.springframework.stereotype.Service;
 
 /**
