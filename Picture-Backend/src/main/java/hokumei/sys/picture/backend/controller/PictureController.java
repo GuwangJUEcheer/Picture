@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import hokumei.sys.picture.backend.annotation.AuthCheck;
+import hokumei.sys.picture.backend.annotation.SaSpaceCheckPermission;
 import hokumei.sys.picture.backend.api.aliyun.AliYunAiApi;
 import hokumei.sys.picture.backend.api.aliyun.CreateOutPaintingTaskResponse;
 import hokumei.sys.picture.backend.api.aliyun.GetOutPaintingTaskResponse;
@@ -19,6 +20,7 @@ import hokumei.sys.picture.backend.constant.UserConstant;
 import hokumei.sys.picture.backend.exception.BusinessException;
 import hokumei.sys.picture.backend.exception.ErrorCode;
 import hokumei.sys.picture.backend.exception.ThrowUtils;
+import hokumei.sys.picture.backend.manager.auth.SpaceUserPermissionConstant;
 import hokumei.sys.picture.backend.model.dto.picture.*;
 import hokumei.sys.picture.backend.model.entity.Picture;
 import hokumei.sys.picture.backend.model.entity.Space;
@@ -96,6 +98,7 @@ public class PictureController {
 	 * 上传图片（可覆盖上传）
 	 */
 	@PostMapping("/upload/url")
+	@SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_UPLOAD)
 	public BaseResponse<PictureVO> uploadPictureByUrl(
 			@RequestBody PictureUploadRequest pictureUploadRequest,
 			HttpServletRequest request) {
@@ -150,6 +153,7 @@ public class PictureController {
 	 * 根据 id 获取图片（封装类）
 	 */
 	@GetMapping("/get/vo")
+	@SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_VIEW)
 	public BaseResponse<PictureVO> getPictureVOById(long id, HttpServletRequest request) {
 		ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
 		// 查询数据库
@@ -159,7 +163,7 @@ public class PictureController {
 		Long spaceId = picture.getSpaceId();
 		if (spaceId != null) {
 			User loginUser = userService.getLoginUser(request);
-			pictureService.checkPictureAuth(loginUser, picture);
+			//pictureService.checkPictureAuth(loginUser, picture);
 		}
 		// 获取封装类
 		return ResultUtils.success(pictureService.getPictureVO(picture, request));
@@ -193,6 +197,7 @@ public class PictureController {
 	 * 分页获取图片列表（封装类）
 	 */
 	@PostMapping("/list/page/vo")
+	@SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_VIEW)
 	public BaseResponse<Page<PictureVO>> listPictureVOByPage(@RequestBody PictureQueryRequest pictureQueryRequest,
 															 HttpServletRequest request) {
 		long current = pictureQueryRequest.getCurrent();
@@ -268,6 +273,7 @@ public class PictureController {
 	 * 编辑图片（给用户使用）
 	 */
 	@PostMapping("/edit")
+	@SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_EDIT)
 	public BaseResponse<Boolean> editPicture(@RequestBody PictureEditRequest pictureEditRequest, HttpServletRequest request) {
 		if (pictureEditRequest == null || pictureEditRequest.getId() <= 0) {
 			throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -296,6 +302,7 @@ public class PictureController {
 	 * 删除图片
 	 */
 	@PostMapping("/delete")
+	@SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_DELETE)
 	public BaseResponse<Boolean> deletePictures(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request) {
 		ThrowUtils.throwIf(deleteRequest == null || deleteRequest.getId() <= 0, ErrorCode.PARAMS_ERROR);
 		User loginUser = userService.getLoginUser(request);
@@ -337,6 +344,7 @@ public class PictureController {
 	 * 以图搜图
 	 */
 	@PostMapping("/search/picture")
+	@SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_VIEW)
 	public BaseResponse<List<ImageSearchResult>> searchPictureByPicture(@RequestBody SearchPictureByPictureRequest searchPictureByPictureRequest) {
 		ThrowUtils.throwIf(searchPictureByPictureRequest == null, ErrorCode.PARAMS_ERROR);
 		Long pictureId = searchPictureByPictureRequest.getPictureId();
@@ -348,6 +356,7 @@ public class PictureController {
 	}
 
 	@PostMapping("/search/color")
+	@SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_VIEW)
 	public BaseResponse<List<PictureVO>> searchPictureByColor(@RequestBody SearchPictureByColorRequest searchPictureByColorRequest, HttpServletRequest request) {
 		ThrowUtils.throwIf(searchPictureByColorRequest == null, ErrorCode.PARAMS_ERROR);
 		String picColor = searchPictureByColorRequest.getPicColor();
@@ -361,6 +370,7 @@ public class PictureController {
 	 * 创建 AI 扩图任务
 	 */
 	@PostMapping("/out_painting/create_task")
+	@SaSpaceCheckPermission(value = SpaceUserPermissionConstant.PICTURE_EDIT)
 	public BaseResponse<CreateOutPaintingTaskResponse> createPictureOutPaintingTask(
 			@RequestBody CreatePictureOutPaintingTaskRequest createPictureOutPaintingTaskRequest,
 			HttpServletRequest request) {

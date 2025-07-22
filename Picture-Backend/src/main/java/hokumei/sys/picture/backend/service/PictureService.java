@@ -17,17 +17,18 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
-* @author 17685
-* @description 针对表【picture(图片表)】的数据库操作Service
-* @createDate 2025-03-03 18:52:01
-*/
+ * @author 17685
+ * @description 针对表【picture(图片表)】的数据库操作Service
+ * @createDate 2025-03-03 18:52:01
+ */
 public interface PictureService extends IService<Picture> {
 
 	/**
 	 * 用户上传文件
+	 *
 	 * @param pictureUploadRequest 请求体
-	 * @param inputSource 文件名称
-	 * @param user 当前登录用户
+	 * @param inputSource          文件名称
+	 * @param user                 当前登录用户
 	 * @return 上传图片详细信息
 	 */
 	public PictureVO uploadPicture(PictureUploadRequest pictureUploadRequest, Object inputSource, User user);
@@ -35,12 +36,14 @@ public interface PictureService extends IService<Picture> {
 
 	/**
 	 * 校验参数
+	 *
 	 * @param picture 需要校验的 picture 对象
 	 */
 	void validPicture(Picture picture);
 
 	/**
 	 * 获取查询的 queryWrapper
+	 *
 	 * @param pictureQueryRequest 图片请求类
 	 * @return 可用来查询的 queryWrapper
 	 */
@@ -48,6 +51,7 @@ public interface PictureService extends IService<Picture> {
 
 	/**
 	 * 获取单个图片的 VO 对象
+	 *
 	 * @param picture picture 对象
 	 * @param request request 请求
 	 * @return 对应图片的 VO
@@ -56,13 +60,14 @@ public interface PictureService extends IService<Picture> {
 
 	/**
 	 * 分页获取图片 VO 对象
-	 * @param picturePage  page 对象
-	 * @param request request 请求
+	 *
+	 * @param picturePage page 对象
+	 * @param request     request 请求
 	 * @return 分页的 VO
 	 */
 	Page<PictureVO> getPictureVOPage(Page<Picture> picturePage, HttpServletRequest request);
 
-	void doPictureReview(PictureReviewRequest pictureReviewRequest,User loginUser);
+	void doPictureReview(PictureReviewRequest pictureReviewRequest, User loginUser);
 
 	void fillReviewStatus(Picture picture, User loginUser);
 
@@ -82,10 +87,12 @@ public interface PictureService extends IService<Picture> {
 
 	/**
 	 * 校验当前用户权限
+	 *
 	 * @param loginUser 登录用户
-	 * @param picture 图片
+	 * @param picture   图片
 	 */
-	void checkPictureAuth(User loginUser,Picture picture);
+	@Deprecated
+	void checkPictureAuth(User loginUser, Picture picture);
 
 	void deletePicture(long pictureId, User loginUser);
 

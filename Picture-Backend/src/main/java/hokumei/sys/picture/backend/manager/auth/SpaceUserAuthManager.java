@@ -5,22 +5,13 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import hokumei.sys.picture.backend.manager.auth.model.SpaceUserAuthConfig;
 import hokumei.sys.picture.backend.manager.auth.model.SpaceUserRole;
-import hokumei.sys.picture.backend.service.SpaceUserService;
-import hokumei.sys.picture.backend.service.UserService;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class SpaceUserAuthManager {
-
-	@Resource
-	private SpaceUserService spaceUserService;
-
-	@Resource
-	private UserService userService;
 
 	public static final SpaceUserAuthConfig SPACE_USER_AUTH_CONFIG;
 
