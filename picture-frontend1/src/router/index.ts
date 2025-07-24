@@ -1,34 +1,28 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import AboutView from '../views/AboutView.vue';
-import UserLoginPage from '../pages/user/UserLoginPage.vue'
-import UserManagePage from '../pages/admin/UserManagePage.vue'
-import UserRegisterPage from '../pages/user/UserRegisterPage.vue'
-import noAuth from '../pages/noAuth.vue'
-import ACCESS_ENUM  from '../enum/accessNum'
-import AddPicturePage from '../pages/picture/AddPicturePage.vue'
-import PictureManagePage from '../pages/admin/PictureManagePage.vue'
-import SpaceManagePage from '../pages/space/SpaceManagePage.vue'
-import PictureDetailPage from '../pages/picture/PictureDetailPage.vue'
-import AddPictureBatchPage from '../pages/picture/AddPictureBatchPage.vue'
-import AddSpacePage from '../pages/space/AddSpacePage.vue'
-import MySpacePage from '../pages/space/MySpacePage.vue'
-import SpaceDetailPage from '../pages/space/SpaceDetailPage.vue'
-import SearchPicturePage from '../pages/picture/SearchPicturePage.vue'
-import SpaceAnalyzePage from '../pages/space/SpaceAnalyzePage.vue'
+import {createRouter, createWebHistory} from 'vue-router'
+import HomePage from '@/pages/HomePage.vue'
+import UserLoginPage from '@/pages/user/UserLoginPage.vue'
+import UserRegisterPage from '@/pages/user/UserRegisterPage.vue'
+import UserManagePage from '@/pages/admin/UserManagePage.vue'
+import AddPicturePage from '@/pages/AddPicturePage.vue'
+import PictureManagePage from '@/pages/admin/PictureManagePage.vue'
+import PictureDetailPage from '@/pages/PictureDetailPage.vue'
+import AddPictureBatchPage from "@/pages/AddPictureBatchPage.vue";
+import SpaceManagePage from "@/pages/admin/SpaceManagePage.vue";
+import AddSpacePage from "@/pages/AddSpacePage.vue";
+import MySpacePage from "@/pages/MySpacePage.vue";
+import SpaceDetailPage from "@/pages/SpaceDetailPage.vue";
+import SearchPicturePage from "@/pages/SearchPicturePage.vue";
+import SpaceAnalyzePage from "@/pages/SpaceAnalyzePage.vue";
+import SpaceUserManagePage from "@/pages/admin/SpaceUserManagePage.vue"; // @author 程序员鱼皮 <a href="https://www.codefather.cn">编程导航原创项目</a>
 
+// @author 程序员鱼皮 <a href="https://www.codefather.cn">编程导航原创项目</a>
 const router = createRouter({
-  history: createWebHistory(), // ✅ 确保 BASE_URL 配置正确
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       name: 'home',
-      component: HomeView,
-    },
-    {
-      path: '/noAuth',
-      name: 'noAuth',
-      component: noAuth,
+      component: HomePage,
     },
     {
       path: '/user/login',
@@ -41,20 +35,14 @@ const router = createRouter({
       component: UserRegisterPage,
     },
     {
-      path: '/admin/manage',
+      path: '/admin/userManage',
       name: '用户管理',
       component: UserManagePage,
-      meta:{
-        access:ACCESS_ENUM.ADMIN
-      }
     },
     {
       path: '/admin/pictureManage',
       name: '图片管理',
       component: PictureManagePage,
-      meta:{
-        access:ACCESS_ENUM.ADMIN
-      }
     },
     {
       path: '/admin/spaceManage',
@@ -62,37 +50,31 @@ const router = createRouter({
       component: SpaceManagePage,
     },
     {
-      path: '/about',
-      name: 'about',
-      component:AboutView,
+      path: '/spaceUserManage/:id',
+      name: '空间成员管理',
+      component: SpaceUserManagePage,
+      props: true,
     },
     {
       path: '/add_picture',
-      name: '添加图片',
+      name: '创建图片',
       component: AddPicturePage,
-      meta:{
-        access:ACCESS_ENUM.ADMIN
-      }
+    },
+    {
+      path: '/add_picture/batch',
+      name: '批量创建图片',
+      component: AddPictureBatchPage,
+    },
+    {
+      path: '/picture/:id',
+      name: '图片详情',
+      component: PictureDetailPage,
+      props: true,
     },
     {
       path: '/add_space',
       name: '创建空间',
       component: AddSpacePage,
-    },
-    {
-      path: '/pic_add/batch',
-      name: '批量导入图片',
-      component: AddPictureBatchPage,
-      meta:{
-        access:ACCESS_ENUM.ADMIN
-      }
-    },
-    //动态路由
-    {
-      path: '/pic/edit/:id',
-      name: '图片详情',
-      component: PictureDetailPage,
-      props:true
     },
     {
       path: '/my_space',
@@ -106,16 +88,24 @@ const router = createRouter({
       props: true,
     },
     {
+      path: '/space_analyze',
+      name: '空间分析',
+      component: SpaceAnalyzePage,
+    },
+    {
       path: '/search_picture',
       name: '图片搜索',
       component: SearchPicturePage,
     },
     {
-      path: '/space_analyze',
-      name: '空间分析',
-      component: SpaceAnalyzePage,
-    }
+      path: '/about',
+      name: 'about',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/AboutView.vue'),
+    },
   ],
-});
+})
 
-export default router;
+export default router

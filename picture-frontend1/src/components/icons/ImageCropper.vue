@@ -1,4 +1,4 @@
-<template>
+<template xmlns="">
   <div class="image-cropper">
     <vue-cropper
       ref="cropperRef"

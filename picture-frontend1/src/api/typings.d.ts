@@ -1,124 +1,213 @@
 declare namespace API {
-
   type BaseResponseBoolean_ = {
     code?: number
     data?: boolean
-    description?: string
+    message?: string
+  }
+
+  type BaseResponseCreateOutPaintingTaskResponse_ = {
+    code?: number
+    data?: CreateOutPaintingTaskResponse
+    message?: string
+  }
+
+  type BaseResponseGetOutPaintingTaskResponse_ = {
+    code?: number
+    data?: GetOutPaintingTaskResponse
     message?: string
   }
 
   type BaseResponseInt_ = {
     code?: number
     data?: number
-    description?: string
+    message?: string
+  }
+
+  type BaseResponseListImageSearchResult_ = {
+    code?: number
+    data?: ImageSearchResult[]
+    message?: string
+  }
+
+  type BaseResponseListPictureVO_ = {
+    code?: number
+    data?: PictureVO[]
+    message?: string
+  }
+
+  type BaseResponseListSpace_ = {
+    code?: number
+    data?: Space[]
+    message?: string
+  }
+
+  type BaseResponseListSpaceCategoryAnalyzeResponse_ = {
+    code?: number
+    data?: SpaceCategoryAnalyzeResponse[]
     message?: string
   }
 
   type BaseResponseListSpaceLevel_ = {
     code?: number
     data?: SpaceLevel[]
-    description?: string
+    message?: string
+  }
+
+  type BaseResponseListSpaceSizeAnalyzeResponse_ = {
+    code?: number
+    data?: SpaceSizeAnalyzeResponse[]
+    message?: string
+  }
+
+  type BaseResponseListSpaceTagAnalyzeResponse_ = {
+    code?: number
+    data?: SpaceTagAnalyzeResponse[]
+    message?: string
+  }
+
+  type BaseResponseListSpaceUserAnalyzeResponse_ = {
+    code?: number
+    data?: SpaceUserAnalyzeResponse[]
+    message?: string
+  }
+
+  type BaseResponseListSpaceUserVO_ = {
+    code?: number
+    data?: SpaceUserVO[]
     message?: string
   }
 
   type BaseResponseLoginUserVO_ = {
     code?: number
     data?: LoginUserVO
-    description?: string
     message?: string
   }
 
   type BaseResponseLong_ = {
     code?: number
     data?: number
-    description?: string
+    message?: string
+  }
+
+  type BaseResponsePagePicture_ = {
+    code?: number
+    data?: PagePicture_
     message?: string
   }
 
   type BaseResponsePagePictureVO_ = {
     code?: number
     data?: PagePictureVO_
-    description?: string
+    message?: string
+  }
+
+  type BaseResponsePageSpace_ = {
+    code?: number
+    data?: PageSpace_
     message?: string
   }
 
   type BaseResponsePageSpaceVO_ = {
     code?: number
     data?: PageSpaceVO_
-    description?: string
     message?: string
   }
 
   type BaseResponsePageUserVO_ = {
     code?: number
     data?: PageUserVO_
-    description?: string
     message?: string
   }
 
   type BaseResponsePicture_ = {
     code?: number
     data?: Picture
-    description?: string
     message?: string
   }
 
   type BaseResponsePictureTagCategory_ = {
     code?: number
     data?: PictureTagCategory
-    description?: string
     message?: string
   }
 
   type BaseResponsePictureVO_ = {
     code?: number
     data?: PictureVO
-    description?: string
     message?: string
   }
 
   type BaseResponseSpace_ = {
     code?: number
     data?: Space
-    description?: string
+    message?: string
+  }
+
+  type BaseResponseSpaceUsageAnalyzeResponse_ = {
+    code?: number
+    data?: SpaceUsageAnalyzeResponse
+    message?: string
+  }
+
+  type BaseResponseSpaceUser_ = {
+    code?: number
+    data?: SpaceUser
     message?: string
   }
 
   type BaseResponseSpaceVO_ = {
     code?: number
     data?: SpaceVO
-    description?: string
     message?: string
   }
 
   type BaseResponseString_ = {
     code?: number
     data?: string
-    description?: string
     message?: string
   }
 
   type BaseResponseUser_ = {
     code?: number
     data?: User
-    description?: string
     message?: string
   }
 
   type BaseResponseUserVO_ = {
     code?: number
     data?: UserVO
-    description?: string
     message?: string
+  }
+
+  type CreateOutPaintingTaskResponse = {
+    code?: string
+    message?: string
+    output?: Output
+    requestId?: string
+  }
+
+  type CreatePictureOutPaintingTaskRequest = {
+    parameters?: Parameters
+    pictureId?: number
   }
 
   type DeleteRequest = {
     id?: number
   }
 
+  type GetOutPaintingTaskResponse = {
+    output?: Output1
+    requestId?: string
+  }
+
   type getPictureByIdUsingGETParams = {
     /** id */
     id?: number
+  }
+
+  type getPictureOutPaintingTaskUsingGETParams = {
+    /** taskId */
+    taskId?: string
   }
 
   type getPictureVOByIdUsingGETParams = {
@@ -146,8 +235,14 @@ declare namespace API {
     id?: number
   }
 
+  type ImageSearchResult = {
+    fromUrl?: string
+    thumbUrl?: string
+  }
+
   type LoginUserVO = {
     createTime?: string
+    editTime?: string
     id?: number
     updateTime?: string
     userAccount?: string
@@ -157,10 +252,43 @@ declare namespace API {
     userRole?: string
   }
 
+  type Output = {
+    taskId?: string
+    taskStatus?: string
+  }
+
+  type Output1 = {
+    code?: string
+    endTime?: string
+    message?: string
+    outputImageUrl?: string
+    scheduledTime?: string
+    submitTime?: string
+    taskId?: string
+    taskMetrics?: TaskMetrics
+    taskStatus?: string
+  }
+
+  type PagePicture_ = {
+    current?: number
+    pages?: number
+    records?: Picture[]
+    size?: number
+    total?: number
+  }
+
   type PagePictureVO_ = {
     current?: number
     pages?: number
     records?: PictureVO[]
+    size?: number
+    total?: number
+  }
+
+  type PageSpace_ = {
+    current?: number
+    pages?: number
+    records?: Space[]
     size?: number
     total?: number
   }
@@ -181,14 +309,29 @@ declare namespace API {
     total?: number
   }
 
+  type Parameters = {
+    addWatermark?: boolean
+    angle?: number
+    bestQuality?: boolean
+    bottomOffset?: number
+    leftOffset?: number
+    limitImageSize?: boolean
+    outputRatio?: string
+    rightOffset?: number
+    topOffset?: number
+    xScale?: number
+    yScale?: number
+  }
+
   type Picture = {
     category?: string
     createTime?: string
     editTime?: string
-    id?: bigint
+    id?: number
     introduction?: string
     isDelete?: number
     name?: string
+    picColor?: string
     picFormat?: string
     picHeight?: number
     picScale?: number
@@ -206,9 +349,17 @@ declare namespace API {
     userId?: number
   }
 
+  type PictureEditByBatchRequest = {
+    category?: string
+    nameRule?: string
+    pictureIdList?: number[]
+    spaceId?: number
+    tags?: string[]
+  }
+
   type PictureEditRequest = {
     category?: string
-    id?: bigint
+    id?: number
     introduction?: string
     name?: string
     tags?: string[]
@@ -217,10 +368,11 @@ declare namespace API {
   type PictureQueryRequest = {
     category?: string
     current?: number
-    id?: bigint
+    endEditTime?: string
+    id?: number
     introduction?: string
     name?: string
-    onlySpaceNull?: boolean
+    nullSpaceId?: boolean
     pageSize?: number
     picFormat?: string
     picHeight?: number
@@ -234,15 +386,14 @@ declare namespace API {
     searchText?: string
     sortField?: string
     sortOrder?: string
-    startEditTime?: string
-    endEditTime?: string
     spaceId?: number
+    startEditTime?: string
     tags?: string[]
     userId?: number
   }
 
   type PictureReviewRequest = {
-    id?: bigint
+    id?: number
     reviewMessage?: string
     reviewStatus?: number
   }
@@ -254,7 +405,7 @@ declare namespace API {
 
   type PictureUpdateRequest = {
     category?: string
-    id?: bigint
+    id?: number
     introduction?: string
     name?: string
     tags?: string[]
@@ -267,39 +418,42 @@ declare namespace API {
   }
 
   type PictureUploadRequest = {
-    id?: bigint
+    fileUrl?: string
+    id?: number
     picName?: string
     spaceId?: number
-    url?: string
   }
 
   type PictureVO = {
     category?: string
     createTime?: string
-    id?: string
+    editTime?: string
+    id?: number
     introduction?: string
     name?: string
+    permissionList?: string[]
+    picColor?: string
     picFormat?: string
     picHeight?: number
     picScale?: number
     picSize?: number
     picWidth?: number
-    reviewMessage?: string
-    reviewStatus?: number
-    reviewTime?: string
-    reviewerId?: number
+    spaceId?: number
     tags?: string[]
     thumbnailUrl?: string
     updateTime?: string
     url?: string
     user?: UserVO
     userId?: number
-    spaceId?:number
   }
 
-  type searchUsingGETParams = {
-    /** userAccount */
-    userAccount: string
+  type SearchPictureByColorRequest = {
+    picColor?: string
+    spaceId?: number
+  }
+
+  type SearchPictureByPictureRequest = {
+    pictureId?: number
   }
 
   type Space = {
@@ -311,19 +465,33 @@ declare namespace API {
     maxSize?: number
     spaceLevel?: number
     spaceName?: string
+    spaceType?: number
     totalCount?: number
     totalSize?: number
     updateTime?: string
     userId?: number
   }
 
-  type SpaceEditRequest = {
-    id?: number
-    spaceName?: string
-  }
-
   type SpaceAddRequest = {
     spaceLevel?: number
+    spaceName?: string
+    spaceType?: number
+  }
+
+  type SpaceCategoryAnalyzeRequest = {
+    queryAll?: boolean
+    queryPublic?: boolean
+    spaceId?: number
+  }
+
+  type SpaceCategoryAnalyzeResponse = {
+    category?: string
+    count?: number
+    totalSize?: number
+  }
+
+  type SpaceEditRequest = {
+    id?: number
     spaceName?: string
   }
 
@@ -342,7 +510,34 @@ declare namespace API {
     sortOrder?: string
     spaceLevel?: number
     spaceName?: string
+    spaceType?: number
     userId?: number
+  }
+
+  type SpaceRankAnalyzeRequest = {
+    topN?: number
+  }
+
+  type SpaceSizeAnalyzeRequest = {
+    queryAll?: boolean
+    queryPublic?: boolean
+    spaceId?: number
+  }
+
+  type SpaceSizeAnalyzeResponse = {
+    count?: number
+    sizeRange?: string
+  }
+
+  type SpaceTagAnalyzeRequest = {
+    queryAll?: boolean
+    queryPublic?: boolean
+    spaceId?: number
+  }
+
+  type SpaceTagAnalyzeResponse = {
+    count?: number
+    tag?: string
   }
 
   type SpaceUpdateRequest = {
@@ -353,19 +548,93 @@ declare namespace API {
     spaceName?: string
   }
 
+  type SpaceUsageAnalyzeRequest = {
+    queryAll?: boolean
+    queryPublic?: boolean
+    spaceId?: number
+  }
+
+  type SpaceUsageAnalyzeResponse = {
+    countUsageRatio?: number
+    maxCount?: number
+    maxSize?: number
+    sizeUsageRatio?: number
+    usedCount?: number
+    usedSize?: number
+  }
+
+  type SpaceUser = {
+    createTime?: string
+    id?: number
+    spaceId?: number
+    spaceRole?: string
+    updateTime?: string
+    userId?: number
+  }
+
+  type SpaceUserAddRequest = {
+    spaceId?: number
+    spaceRole?: string
+    userId?: number
+  }
+
+  type SpaceUserAnalyzeRequest = {
+    queryAll?: boolean
+    queryPublic?: boolean
+    spaceId?: number
+    timeDimension?: string
+    userId?: number
+  }
+
+  type SpaceUserAnalyzeResponse = {
+    count?: number
+    period?: string
+  }
+
+  type SpaceUserEditRequest = {
+    id?: number
+    spaceRole?: string
+  }
+
+  type SpaceUserQueryRequest = {
+    id?: number
+    spaceId?: number
+    spaceRole?: string
+    userId?: number
+  }
+
+  type SpaceUserVO = {
+    createTime?: string
+    id?: number
+    space?: SpaceVO
+    spaceId?: number
+    spaceRole?: string
+    updateTime?: string
+    user?: UserVO
+    userId?: number
+  }
+
   type SpaceVO = {
     createTime?: string
     editTime?: string
     id?: number
     maxCount?: number
     maxSize?: number
+    permissionList?: string[]
     spaceLevel?: number
     spaceName?: string
+    spaceType?: number
     totalCount?: number
     totalSize?: number
     updateTime?: string
     user?: UserVO
     userId?: number
+  }
+
+  type TaskMetrics = {
+    failed?: number
+    succeeded?: number
+    total?: number
   }
 
   type testDownloadFileUsingGETParams = {
@@ -374,10 +643,10 @@ declare namespace API {
   }
 
   type uploadPictureUsingPOSTParams = {
-    id?: bigint
+    fileUrl?: string
+    id?: number
     picName?: string
     spaceId?: number
-    url?: string
   }
 
   type User = {
@@ -402,10 +671,6 @@ declare namespace API {
     userRole?: string
   }
 
-  type UserDeleteRequest = {
-    id?: string
-  }
-
   type UserLoginRequest = {
     userAccount?: string
     userPassword?: string
@@ -413,18 +678,13 @@ declare namespace API {
 
   type UserQueryRequest = {
     current?: number
-    /** 用户ID */
     id?: number
     pageSize?: number
     sortField?: string
     sortOrder?: string
-    /** 账号 */
     userAccount?: string
-    /** 用户昵称 */
     userName?: string
-    /** 用户简介 */
     userProfile?: string
-    /** 用户角色（user/admin/ban） */
     userRole?: string
   }
 

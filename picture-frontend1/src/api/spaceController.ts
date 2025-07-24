@@ -1,18 +1,18 @@
 // @ts-ignore
 /* eslint-disable */
-import request from '../request/index'
+import request from '@/request'
 
 /** addSpace POST /api/space/add */
 export async function addSpaceUsingPost(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.SpaceAddRequest,
+  body: API.SpaceAddRequest,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseLong_>('/api/space/add', {
     method: 'POST',
-    params: {
-      ...params,
+    headers: {
+      'Content-Type': 'application/json',
     },
+    data: body,
     ...(options || {}),
   })
 }
@@ -85,12 +85,12 @@ export async function listSpaceLevelUsingGet(options?: { [key: string]: any }) {
   })
 }
 
-/** listSpaceByPageAdmin POST /api/space/list/page */
-export async function listSpaceByPageAdminUsingPost(
+/** listSpaceByPage POST /api/space/list/page */
+export async function listSpaceByPageUsingPost(
   body: API.SpaceQueryRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponsePageSpaceVO_>('/api/space/list/page', {
+  return request<API.BaseResponsePageSpace_>('/api/space/list/page', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

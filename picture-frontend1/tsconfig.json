@@ -1,16 +1,11 @@
 {
   "files": [],
   "references": [
-    { "path": "./tsconfig.node.json" },
-    { "path": "./tsconfig.app.json" }
-  ],
-  "compilerOptions": {
-    "skipLibCheck": true,
-    "noImplicitAny": false,
-    "strict": false,
-    "noEmit": true,
-    "jsx": "preserve"
-  },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["node_modules", "dist"]
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
 }

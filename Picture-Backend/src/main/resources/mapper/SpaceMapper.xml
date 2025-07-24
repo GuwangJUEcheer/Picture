@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="hokumei.sys.picture.backend.mapper.SpaceMapper">
+<mapper namespace="com.hokumei.backend.mapper.SpaceMapper">
 
-    <resultMap id="BaseResultMap" type="hokumei.sys.picture.backend.model.entity.Space">
+    <resultMap id="BaseResultMap" type="com.hokumei.backend.model.entity.Space">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="spaceName" column="spaceName" jdbcType="VARCHAR"/>
             <result property="spaceLevel" column="spaceLevel" jdbcType="INTEGER"/>
@@ -21,7 +21,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,spaceName,spaceLevel,spaceType
+        id,spaceName,spaceLevel,spaceType,
         maxSize,maxCount,totalSize,
         totalCount,userId,createTime,
         editTime,updateTime,isDelete

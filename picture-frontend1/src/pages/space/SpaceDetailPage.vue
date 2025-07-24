@@ -5,6 +5,7 @@ import { listPictureVoByPageUsingPost } from '@/api/pictureController'
 import { getSpaceVoByIdUsingGet } from '@/api/spaceController'
 import { formatSize } from '@/util'
 import PictureList from '@/pages/picture/PictureList.vue'
+import {TeamOutlined} from "@ant-design/icons-vue";
 
 const props = defineProps<{
   id:  number | undefined
@@ -27,6 +28,19 @@ const fetchSpaceDetail = async () => {
     message.error('获取空间详情失败：' + e.message)
   }
 }
+// 通用权限检查函数
+function createPermissionChecker(permission: string) {
+  return computed(() => {
+    return (space.value.permissionList ?? []).includes(permission)
+  })
+}
+
+// 定义权限检查
+const canManageSpaceUser = createPermissionChecker(SPACE_PERMISSION_ENUM.SPACE_USER_MANAGE)
+const canUploadPicture = createPermissionChecker(SPACE_PERMISSION_ENUM.PICTURE_UPLOAD)
+const canEditPicture = createPermissionChecker(SPACE_PERMISSION_ENUM.PICTURE_EDIT)
+const canDeletePicture = createPermissionChecker(SPACE_PERMISSION_ENUM.PICTURE_DELETE)
+
 
 onMounted(() => {
   fetchSpaceDetail()
@@ -74,6 +88,14 @@ const fetchData = async () => {
   loading.value = false
 }
 
+watch(
+  () => props.id,
+  (newSpaceId) => {
+    fetchSpaceDetail()
+    fetchData()
+  },
+)
+
 // 页面加载时请求一次
 onMounted(() => {
   fetchData()
@@ -83,10 +105,19 @@ onMounted(() => {
 <template>
   <!-- 空间信息 -->
   <a-flex justify="space-between">
-    <h2>{{ space.spaceName }}（私有空间）</h2>
+    <h2>{{ space.spaceName }}（{{ SPACE_TYPE_MAP[space.spaceType] }}）</h2>
     <a-space size="middle">
       <a-button type="primary" :href="`/add_picture?spaceId=${id}`" target="_blank">
         + 创建图片
+      </a-button>
+      <a-button
+        type="primary"
+        ghost
+        :icon="h(  TeamOutlined)"
+        :href="`/spaceUserManage/${id}`"
+        target="_blank"
+      >
+        成员管理
       </a-button>
       <a-tooltip :title="`占用空间 ${formatSize(space.totalSize)} / ${formatSize(space.maxSize)}`">
         <a-progress

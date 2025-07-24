@@ -5,10 +5,9 @@
   "compilerOptions": {
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+
     "paths": {
       "@/*": ["./src/*"]
     }
   }
 }
-
-// The "emit":disable line is added to prevent the compiler from emitting any files.

@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import request from '../request/index'
+import request from '@/request'
 
 /** addUser POST /api/user/add */
 export async function addUserUsingPost(body: API.UserAddRequest, options?: { [key: string]: any }) {
@@ -14,9 +14,9 @@ export async function addUserUsingPost(body: API.UserAddRequest, options?: { [ke
   })
 }
 
-/** deleteBtId POST /api/user/delete */
-export async function deleteBtIdUsingPost(
-  body: API.UserDeleteRequest,
+/** deleteUser POST /api/user/delete */
+export async function deleteUserUsingPost(
+  body: API.DeleteRequest,
   options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseBoolean_>('/api/user/delete', {
@@ -67,15 +67,7 @@ export async function getUserVoByIdUsingGet(
   })
 }
 
-/** getAllUsers POST /api/user/getAllUsers */
-export async function getAllUsersUsingPost(options?: { [key: string]: any }) {
-  return request<API.User[]>('/api/user/getAllUsers', {
-    method: 'POST',
-    ...(options || {}),
-  })
-}
-
-/** ListUserVOByPage POST /api/user/list/page/vo */
+/** listUserVOByPage POST /api/user/list/page/vo */
 export async function listUserVoByPageUsingPost(
   body: API.UserQueryRequest,
   options?: { [key: string]: any }
@@ -105,9 +97,9 @@ export async function userLoginUsingPost(
   })
 }
 
-/** logOut POST /api/user/logOut */
-export async function logOutUsingPost(options?: { [key: string]: any }) {
-  return request<API.BaseResponseBoolean_>('/api/user/logOut', {
+/** userLogout POST /api/user/logout */
+export async function userLogoutUsingPost(options?: { [key: string]: any }) {
+  return request<API.BaseResponseBoolean_>('/api/user/logout', {
     method: 'POST',
     ...(options || {}),
   })
@@ -124,21 +116,6 @@ export async function userRegisterUsingPost(
       'Content-Type': 'application/json',
     },
     data: body,
-    ...(options || {}),
-  })
-}
-
-/** search GET /api/user/search */
-export async function searchUsingGet(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.searchUsingGETParams,
-  options?: { [key: string]: any }
-) {
-  return request<API.User[]>('/api/user/search', {
-    method: 'GET',
-    params: {
-      ...params,
-    },
     ...(options || {}),
   })
 }

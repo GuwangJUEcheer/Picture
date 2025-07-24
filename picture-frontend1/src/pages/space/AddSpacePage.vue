@@ -14,6 +14,15 @@ const space = ref<API.SpaceVO>()
 const router = useRouter()
 const route = useRoute()
 
+// 空间类别
+const spaceType = computed(() => {
+  if (route.query?.type) {
+    return Number(route.query.type)
+  }
+  return SPACE_TYPE_ENUM.PRIVATE
+})
+
+
 const spaceLevelList = ref<API.SpaceLevel[]>([])
 
 // 获取空间级别
@@ -56,8 +65,10 @@ const onSuccess = (newSpace: API.SpaceVO) => {
 
 const handleSubmit = async (values: any) => {
   loading.value = true
+  // 创建
   await addSpaceUsingPost({
-    ...values
+    ...values,
+    spaceType: spaceType.value
   }).then((res) => {
     if (res.data.code === 0 && res.data.data) {
       message.success('空间创建成功')

@@ -1,7 +1,16 @@
+<template>
+  <div class="space-category-analyze">
+    <a-card title="空间图片分类分析">
+      <v-chart :option="options" style="height: 320px; max-width: 100%;" :loading="loading" />
+    </a-card>
+  </div>
+</template>
+
 <script setup lang="ts">
 import VChart from 'vue-echarts'
 import 'echarts'
-import { watchEffect } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
+import { getSpaceCategoryAnalyzeUsingPost } from '@/api/spaceAnalyzeController.ts'
 import { message } from 'ant-design-vue'
 
 interface Props {
@@ -16,9 +25,35 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // 图表数据
-const dataList = ref<API.SpaceCategoryAnalyzeResponse[]>([])
+const dataList = ref<API.SpaceCategoryAnalyzeResponse>([])
+// 加载状态
 const loading = ref(true)
 
+// 获取数据
+const fetchData = async () => {
+  loading.value = true
+  // 转换搜索参数
+  const res = await getSpaceCategoryAnalyzeUsingPost({
+    queryAll: props.queryAll,
+    queryPublic: props.queryPublic,
+    spaceId: props.spaceId,
+  })
+  if (res.data.code === 0 && res.data.data) {
+    dataList.value = res.data.data ?? []
+  } else {
+    message.error('获取数据失败，' + res.data.message)
+  }
+  loading.value = false
+}
+
+/**
+ * 监听变量，参数改变时触发数据的重新加载
+ */
+watchEffect(() => {
+  fetchData()
+})
+
+// 图表选项
 const options = computed(() => {
   const categories = dataList.value.map((item) => item.category)
   const countData = dataList.value.map((item) => item.count)
@@ -53,61 +88,6 @@ const options = computed(() => {
     ],
   }
 })
-
-
-/**
- * 加载数据
- */
-const fetchData = async () => {
-  loading.value = true
-  const res = await getSpaceCategoryAnalyzeUsingPost({
-    queryAll: props.queryAll,
-    queryPublic: props.queryPublic,
-    spaceId: props.spaceId,
-  })
-  if (res.data.code === 0) {
-    dataList.value = res.data.data ?? []
-  } else {
-    message.error('获取数据失败，' + res.data.message)
-  }
-  loading.value = false
-}
-
-const userId = ref<string>()
-const timeDimension = ref<string>('day')
-const timeDimensionOptions = [
-  {
-    label: '日',
-    value: 'day',
-  },
-  {
-    label: '周',
-    value: 'week',
-  },
-  {
-    label: '月',
-    value: 'month',
-  },
-]
-
-const doSearch = (value: string) => {
-  userId.value = value
-}
-
-/**
- * 监听变量，改变时触发数据的重新加载
- */
-watchEffect(() => {
-  fetchData()
-})
 </script>
-
-<template>
-  <div class="space-category-analyze">
-    <a-card title="图库分类占用">
-      <v-chart :option="options" style="height: 320px; max-width: 100%" :loading="loading" />
-    </a-card>
-  </div>
-</template>
 
 <style scoped></style>
